@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{longtable}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1: #2}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)}}
+\newcommand\algo{\vspace{.10in}\textbf{Algorithm: }}
+\newcommand\correctness{\vspace{.10in}\textbf{Correctness: }}
+\newcommand\runtime{\vspace{.10in}\textbf{Running time: }}
+\newcommand\pseudoCode{\vspace{.10in}\textbf{PseudoCode: }}
+\newcommand*{\perm}[2]{{}^{#1}\!P_{#2}}
+\newcommand*{\comb}[2]{{}^{#1}\!C_{#2}}
+%\pagestyle{fancyplain}
+%\lhead{\textbf{\NAME\ (\UID)}}
+%\chead{\textbf{Hw\HWNUM}}
+%\rhead{CS 6350, \today}
+\title{CS6150 - Homework/Assignment-4}
+\author{Arnab Das(u1014840)}
+\usepackage[utf8]{inputenc}
+\begin{document}
+  \pagenumbering{gobble}
+  \maketitle
+  \newpage
+  \pagenumbering{arabic}
+  \newcommand\NAME{ARNAB DAS}
+  \newcommand\UID{uxxxxxxx}
+  \newcommand\HWNUM{4}
+  
+  %%---------- Question-1 -----------------
+  \question{1}{Minimum Spanning Tree}
+  \part{a} Let G be weighted directed graph with all edge weights being distinct. \textbf {Prove:} G has an unique spanning tree: \newline
+  \textbf {Proof:} Consider G has two spanning trees, $T_{1}$ and $T_{2}$. Let $e_{1}$ be the edge with the minimum weight in the graph that is contained in $T_{1}$ and not in $T_{2}$. Then $T_{2} \cup e_{1}$ results in a cycle, say C. Then  one of the other edges of C, say $e_{2}$ is not in $T_{1}$, else $T_{1}$ would have had a cycle.  Then, if we replace $e_{2}$ by $e_{1}$ in $T_{2}$, that would result in a spanning tree with a smaller weight than $T_{2}$. Then $T_{2}$ is not a spanning tree. Hence $T_{1}$ is a unique spanning tree. (Proved) \newline
+
+  \part{b} Even if the weights of the graph are not distinct, it is still possible to get a unique spanning tree. We describe below an algorithm , that is a slight modification of the Kruskal algorithm. Given a weighted graph $G=(V,E,W)$, where V denotes the set of vertices, E denotes the set of edges and W denotes the edge weights. Consider initially a setting of all the nodes without any of the edges, each is a separate tree. Then we gradually build up the minimum spanning tree(mst) by union of these disjoint trees. We always start with the edge of minimal weight at every step, and if the end points of that edge lies in two different trees, then that edge acts as the union of these two trees resulting in a bigger tree. If , the end-points of the edge lie in the same tree, that edge, if added, will contribute to a cycle in that tree. In Kruskal's we ignore this edge. However, we can use this edge to detect non-uniqueness. Once a cycle is detected, then in that tree, we look for another edge that has the same weight as out current edge. If there exists another such an edge, that leads to the conclusion that it is not unique, since the other edge could have been replaced with the current edge, still yielding the minimum spanning tree. \newline
+  \pseudoCode \newline
+  \hspace*{0.0cm} \textbf {KRUSKAL(G(V,E,W))}: \newline
+  \hspace*{0.5cm} //  Graph represented as triples(u,v,w), where u,v are the edge end-points and w the edge weight w(u,v). \newline
+  \hspace*{0.5cm} \textbf {BuildHeap}(G(V,E,W)) \newline
+  \hspace*{0.5cm} \textbf {foreach} $u \in V$ \newline
+  \hspace*{1cm}     Make-Set(u) \newline
+  \hspace*{0.5cm} T = $NULL$ // This corresponds to the spanning set. \newline
+  \hspace*{0.5cm} \textbf {while} ($|F|$ = n-1) // if still spanning \newline
+  \hspace*{1cm}		(u,v,w) = ExtractMin(H) \newline
+  \hspace*{1cm}		Uset = Find(u) \newline
+  \hspace*{1cm}		Vset = Find(v) \newline
+  \hspace*{1cm}		\textbf {if} (Uset $\neq$ Vset) \newline
+  \hspace*{1.5cm}		$T = T \cup {(u,v)}$ \newline
+  \hspace*{1.5cm}		\textbf {Merge}(Uset, Vset) \newline
+  \hspace*{1cm}		\textbf {else} // indicates part of same tree, hence contributes to a cycle \newline
+  \hspace*{1.5cm}		bool x = search(w, Uset) // search for the same weight value in the Uset \newline
+  \hspace*{1.5cm}		\textbf {if} (x=true) \textbf {return} $MST\_NOT\_UNIQUE$ \newline
+  \hspace*{0.5cm} return $MST\_UNIQUE$ \newline
+
+  \correctness 
+    The correctness is same as Kruskal's algorithm. Consider that Kruskal's algorithm gives a minimum spanning tree, M=(V,F), where F is the set of the edges in the MST. Then, if there exists an edge, e, in E-F, such that adding e to the M yields a cycle, C, and if weight(e)=m is the lowest edge weight in $F \cap C$, then we can swap that edge of $F \cap C$ with e, yoielding another spanning tree. This is exactly the part executed by 'search' and hence guaranteed correctness. We searches for same weight edges in the Uset corresponding to the edge of the current edge when a cycle is detected, and if found we say the MST is not unique, else the MST is unique. Thus, we have modified the Kruskal's algorithm to dynamically find the MST uniqueness. \newline
+
+
+
+
+
+
+
+
+
+ \end{document}
+
