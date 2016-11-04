@@ -97,5 +97,16 @@
    \textbf {Proof of the proposition:} First choose a maximal list of the cycles, $C_1,C_2,\dots,C_k$ so that every edge appears in atmost one. Suppose(\textbf {for contradiction}) that there is an edge not included in any cycle $C_i$ and let H be the component $D - \cup_{i=1}^kE(C_i)$ which contains an edge. Now, every vertex $v \in V(H)$, where V(H) is the vertex set of H, satisfies indegree(v)=outdegree(v)$\neq 0$. Then for n nodes, the degree sum is more than n, which will result in a cycle $C \subseteq H$. But then C may be appended to the List of cycles. This contradiction completes the proof. \newline
    \textbf {Proof Goal: } For any two vertices s,t and an integer $k \geq 1$ in directed graph G of edge capacities 1, there exists k edge disjoint paths from s to t, iff there exists k edge disjoint paths from t to s. \newline
    \textbf {Proof} Since, there exists cycles that covers every edge as per the proposition, the cycle $C_i$ covering the edges in the i'th edge disjoint path from s to t will require a path $i^\prime$ from t to s to complete the cycle. Since, the k paths are edge disjoint, they do not share any edge and hence they cannot be mutually part of the same cycle. Which means for the k edge disjoint paths from s to t , there exists atleast k cycles, and each of these k edge disjoint paths from s to t, covers their corresponding cycles from s to t. Then to complete the cycle, each of them will have a remaining path from t to s, and these paths will also be edge disjoint since the cycles cannot intersect else same edge will get covered in two cycles. Hence, in the reverse path from t to s, there also must exist k-edge disjoint paths if there needs to exists k edge disjoint paths from s to t.(Proved). \newline
+
+
+   \question{3}{More Reductions to Flows \dots}
+   \algo Consider the n departments set be labeled as $D={D_1, D_2, \dots, D_n}$ and the set of faculties be labeled as $F = {F_1, F_2, \dots , F_m}$. Also, suppose that there are 'r' ranks of professors. We can set up the problem as a maximum matching problem as shown in the figure below: \newline
+  \begin{figure}[H]
+   \centering
+  \includegraphics[width=14cm, height=14cm]{Prob3a}
+  \caption{Max Matching for committee formation}
+  \end{figure}
+  We set up a bipartite graph from set D to set F, and every edge from $d_i \in D$ to $f_j \in F$ indicates that faculty $F_j$ has appointment with department $D_i$. The weights of these edges are set to 1. The sets of $M={M_1, M_2, \dots , M_r}$ indicates the set of ranks. Thus an edge from $F_i$ to $M_j$ indicates that the faculty $F_i$ belongs to rank $M_j$. The outflow edges from the rank nodes to the sink are given weights of $\dfrac{n}{r}$, such that every rank has equal representation to the final committee. Now we run ford-fulkerson algorithm and if the maximum flow of this network is equal to the max possible outflow from the source, then we have a maximum matching solution. Then, we say that a committee can be formed with equal representation from all professors, and one professor for each different. Else, such a commitee cannot be formed. The solution of the maximum matching problem returns a set of edges. 
+   
  \end{document}
 
