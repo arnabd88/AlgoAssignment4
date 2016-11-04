@@ -100,7 +100,7 @@
 
 
    \question{3}{More Reductions to Flows \dots}
-   \algo Consider the n departments set be labeled as $D={D_1, D_2, \dots, D_n}$ and the set of faculties be labeled as $F = {F_1, F_2, \dots , F_m}$. Also, suppose that there are 'r' ranks of professors. We can set up the problem as a maximum matching problem as shown in the figure below: \newline
+   \algo Consider the n departments set be labeled as $D={D_1, D_2, \dots, D_n}$ and the set of faculties be labeled as $F = {F_1, F_2, \dots , F_m}$. Also, suppose that there are 'r' ranks of professors. We can set up the problem as a maximum matching problem as shown in the figure-1: \newline
   \begin{figure}[H]
    \centering
   \includegraphics[width=14cm, height=14cm]{Prob3a}
@@ -110,10 +110,22 @@
 
   \correctness The only way we can get a max flow of n, is if the flow from each rank is equal to $\dfrac{n}{r}$, since the capacities of these edges is limited to n/r . Each rank can contribute n/r if and only if, it gets contributions from (n/r) distinct faculties since the edge capacities between faculties to ranks is 1 and no faculty can have edge to multiple ranks. This leads to the fact that n distinct faculties are contributing to the entire rank set. Since, the edge weights from departments to faculties is also 1, the maximum matching solution ensures that one department gets flow 1 with exactly 1 faculty and no two departments gets match with the same faculty. Since, we have n faculties with flow 1 to the rank set, hence each of the n department must have an edge 1 faculty to conserve the flow. Thus, overall we ensure that each department has 1 representative faculty with no overlap across departments and that each rank of faculties have equal distribution in the final committee, if we get the max matching solution. This ensures correctness of our algorithm. \newline
 
-  \runtime  To set-up the graph, we have to setup at maximum E=(n + mn + m + n) edges, hence this setup will be bounded in O(mn). The outflow from the source is n, so the Ford-Fulkersion is bounded by $O(n \times E)$ = $O(n(2n+mn+n))$ = $O(mn^2)$. 
+  \runtime  To set-up the graph, we have to setup at maximum E=(n + mn + m + n) edges, hence this setup will be bounded in O(mn). The outflow from the source is n, so the Ford-Fulkersion is bounded by $O(n \times E)$ = $O(n(2n+mn+n))$ = $O(mn^2)$, which is poly-time.
 
 
   \question{3}{b}
+  \algo Given an $n \times n$ checkerboard with some squares deleted. In a checkerboard, the neighbours of a black box are 4 white boxes and the neighbours of a white box are 4 black boxes. So, never will a white box have a white box as a neighbour and a black box will never have a black box as a neighbour. This directly leads us to a bipartite matching scenario. Note that in our case, we might not have the 4 neighbours since some squares will be deleted, but that doesn't affects the bipartiteness of the problem. So, we consider a set of white squares/boxes(W) and a set of black squares/boxes(B) and a source node S and a sink node t. An edge from $w_i \in W$ to an edge $b_i \in B$ indicates that in the given checkerboard they are valid neighbours and has the possibility of a domino being placed over them, and these valid edges are weighted as 1, since each square can atmost be part of a single domino. Each source node to $w_i$ edge is weighted as 1 so that the $w_i$ can have an incoming flow of 1 so that it can have an outgoing flow of 1 towards one black box. Similarly , each $b_i$ has an outgoing flow of 1 towards the sink. The setup is shown in Figure-2
+  \begin{figure}[H]
+   \centering
+  \includegraphics[width=14cm, height=12cm]{Prob3b}
+  \caption{Checkerboard bipartite setup}
+  \end{figure}
+
+  If the number of available squares is odd, then we return that the tiling is not possible, since a domino is placed on two squares without an overlap, it requires an even number of squares. If the number of squares are even, two have the solution to this problem, the number of black and white squares must also be the same and equal to $m/2$, and if not we return tiling is not possible. When the cardinality of both white and black squares is even and m/2, we run the Ford-Fulkerson algorithm on this setup. If the maximum flow is m/2 , we say the domino tiling is possible and return the solution as set of edges $\{w_i,b_j\}$, which forms the exact combinations of the black and white squares that should be tiled together. \newline
+
+  \correctness On this setup if we get the maximum flow, then our claim is that we have got a solution for the tiling of the dominos. Since the out flows from the black boxes to the sink are weighted 1, a max flow of m/2 means that each $b_i$ contributes 1 unit. For each $b_i$ to contribute 1 unit, they must have received exact 1 unit flow from exact one of the $w_j$ . Since, the number of white and black boxes are equal, this means that each white box $w_{j}$ has been paired to a distinct $b_i$ by contributing a flow of one. These distinct pairs of $w_j,b_i$ are the positions where we place the dominos. This guarantees the correctness of the solution. \newline
+
+  \runtime The setup of the graph can be done in $O(m^2)$ time . The outflow from the source is m/2. Hence, the runtime bound will be $(m^2 \times \dfrac{m}{2}) = O(m^3)$, which is polynomial. 
    
  \end{document}
 
