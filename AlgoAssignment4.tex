@@ -100,20 +100,21 @@
 
 
    \question{3}{More Reductions to Flows \dots}
+   \part{a}
    \algo Consider the n departments set be labeled as $D={D_1, D_2, \dots, D_n}$ and the set of faculties be labeled as $F = {F_1, F_2, \dots , F_m}$. Also, suppose that there are 'r' ranks of professors. We can set up the problem as a maximum matching problem as shown in the figure-1: \newline
   \begin{figure}[H]
    \centering
   \includegraphics[width=14cm, height=14cm]{Prob3a}
   \caption{Max Matching for committee formation}
   \end{figure}
-  We set up a graph from set D to set F, and every edge from $d_i \in D$ to $f_j \in F$ indicates that faculty $F_j$ has appointment with department $D_i$. The weights of these edges are set to 1. The sets of $M={M_1, M_2, \dots , M_r}$ indicates the set of ranks. Thus an edge from $F_i$ to $M_j$ indicates that the faculty $F_i$ belongs to rank $M_j$. The outflow edges from the rank nodes to the sink(t) are given weights of $\dfrac{n}{r}$, such that every rank has equal representation to the final committee. The inflow edges from to the $D_i$ from the source is set to 1, such that the max outflow is n and every department is allowed to pick one faculty. Now we run ford-fulkerson algorithm and if the maximum flow of this network is equal to the max possible outflow from the source,that is n, , then we have a maximum matching solution. Then, we say that a committee can be formed with equal representation from all professors, and one professor for each different, and \textbf {return} the set of faculties for whom the flow value to their corresponding rank, that is, $F_i -> mj$ is 1.  If the max flow is not n, the return that such a committee cannot be formed. \newline
+  We set up a graph from set D to set F, and every edge from $d_i \in D$ to $f_j \in F$ indicates that faculty $F_j$ has appointment with department $D_i$. The weights of these edges are set to 1. The sets of $M={M_1, M_2, \dots , M_r}$ indicates the set of ranks. Thus an edge from $F_i$ to $M_j$ indicates that the faculty $F_i$ belongs to rank $M_j$. The outflow edges from the rank nodes to the sink(t) are given weights of $\dfrac{n}{r}$, such that every rank has equal representation to the final committee. The inflow edges from to the $D_i$ from the source is set to 1, such that the max outflow is n and every department is allowed to pick one faculty. Now we run ford-fulkerson algorithm and if the maximum flow of this network is equal to the max possible outflow from the source,that is n, , then we have a maximum matching solution. Then, we say that a committee can be formed with equal representation from all ranks of faculties, and one faculty for each different, and \textbf {return} the set of faculties for whom the flow value to their corresponding rank, that is, $F_i -> mj$ is 1.  If the max flow is not n, the return that such a committee cannot be formed. \newline
 
   \correctness The only way we can get a max flow of n, is if the flow from each rank is equal to $\dfrac{n}{r}$, since the capacities of these edges is limited to n/r . Each rank can contribute n/r if and only if, it gets contributions from (n/r) distinct faculties since the edge capacities between faculties to ranks is 1 and no faculty can have edge to multiple ranks. This leads to the fact that n distinct faculties are contributing to the entire rank set. Since, the edge weights from departments to faculties is also 1, the maximum matching solution ensures that one department gets flow 1 with exactly 1 faculty and no two departments gets match with the same faculty. Since, we have n faculties with flow 1 to the rank set, hence each of the n department must have an edge 1 faculty to conserve the flow. Thus, overall we ensure that each department has 1 representative faculty with no overlap across departments and that each rank of faculties have equal distribution in the final committee, if we get the max matching solution. This ensures correctness of our algorithm. \newline
 
   \runtime  To set-up the graph, we have to setup at maximum E=(n + mn + m + n) edges, hence this setup will be bounded in O(mn). The outflow from the source is n, so the Ford-Fulkersion is bounded by $O(n \times E)$ = $O(n(2n+mn+n))$ = $O(mn^2)$, which is poly-time.
 
 
-  \question{3}{b}
+  \part{b}
   \algo Given an $n \times n$ checkerboard with some squares deleted. In a checkerboard, the neighbours of a black box are 4 white boxes and the neighbours of a white box are 4 black boxes. So, never will a white box have a white box as a neighbour and a black box will never have a black box as a neighbour. This directly leads us to a bipartite matching scenario. Note that in our case, we might not have the 4 neighbours since some squares will be deleted, but that doesn't affects the bipartiteness of the problem. So, we consider a set of white squares/boxes(W) and a set of black squares/boxes(B) and a source node S and a sink node t. An edge from $w_i \in W$ to an edge $b_i \in B$ indicates that in the given checkerboard they are valid neighbours and has the possibility of a domino being placed over them, and these valid edges are weighted as 1, since each square can atmost be part of a single domino. Each source node to $w_i$ edge is weighted as 1 so that the $w_i$ can have an incoming flow of 1 so that it can have an outgoing flow of 1 towards one black box. Similarly , each $b_i$ has an outgoing flow of 1 towards the sink. The setup is shown in Figure-2
   \begin{figure}[H]
    \centering
@@ -126,6 +127,20 @@
   \correctness On this setup if we get the maximum flow, then our claim is that we have got a solution for the tiling of the dominos. Since the out flows from the black boxes to the sink are weighted 1, a max flow of m/2 means that each $b_i$ contributes 1 unit. For each $b_i$ to contribute 1 unit, they must have received exact 1 unit flow from exact one of the $w_j$ . Since, the number of white and black boxes are equal, this means that each white box $w_{j}$ has been paired to a distinct $b_i$ by contributing a flow of one. These distinct pairs of $w_j,b_i$ are the positions where we place the dominos. This guarantees the correctness of the solution. \newline
 
   \runtime The setup of the graph can be done in $O(m^2)$ time . The outflow from the source is m/2. Hence, the runtime bound will be $(m^2 \times \dfrac{m}{2}) = O(m^3)$, which is polynomial. 
+
+  \part{c}
+  \algo Given a graph G=(V,E) where V are the set of vertices and E are the set of edges, and V = $\{v_1, v_2, \dots, v_n\}$. If $|V| \geq |E|$, then we do not have a cycle cover, since a cycle cover requires $|E|\geq|V|$.  W break each vertex, $v_j$ as two vertices $v_{j_{in}}$ and $v_{j_{out}}$ , where the former forms the set of vertices that receive incoming edges and the latter form the set of edges that has outgoing edges. We setup the bipartite sets of these vertices such that any edge ,e, going from $v_{j_{out}}$ to $v_{k_{in}}$ indicates a directed edge from node $v_j$ to $v_k$ in the original graph. We set up the source S and connect each $v_{j_{out}}$ to the source with edge weight 1, and connect each $v_{j_{in}}$ to the sink node with edge weight 1. The valid edges between $v_{j_{out}}$ to $v_{k_{in}}$ also has an edge weight of 1. Then we compute the max flow on this graph by running the Ford-Fulkerson algorithm. If the max flow is equal to n, then we have a cycle cobver for this graph and return the solution set comprising of the pairs of edges ($v_{j_{out}}$,$v_{k_{in}}$) that have a flow value of 1. \newline
+
+  \begin{figure}[H]
+   \centering
+  \includegraphics[width=14cm, height=12cm]{Prob3c}
+  \caption{Cycle Cover}
+  \end{figure}
+
+  \correctness We claim that if the maximum flow is equal to n , then we have found a cycle cover. If max flow is n, then each of the $v_{k_{in}}$ has contributed 1 unit to that, which means each $v_{k_{in}}$ has received exactly 1 unit from exactly one $v_{j_{out}}$. Thus, when you have maximum matching, it indicates that each node, is having one incoming edge and one outgoing edge. This is only possible if these edges form cycles and two cycles cannot have the same node, since each node is visited exactly once and there are n edges. Suppose of these n nodes and n edges, m of them form a cycle, using m edges. Then the remaining (n-m) nodes will be completely disjoint from these m nodes since the m nodes have already been visited. Since the (n-m) nodes also has (n-m) edges available, they can again form another cycle or many disjoint smaller cycles. Hence, the solution will be a cycle cover. This guarantees the correctness of the solution. \newline
+
+  \runtime 
+  The set-up of the graph requires (m + 2n) edges where m are the edges of the original graph and n are the nodes of the original graph. The runtime of FordFulkerson is bound by $O((m+2n)n)$ , which is polynomial in m and n. \newline
    
  \end{document}
 
