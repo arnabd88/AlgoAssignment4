@@ -141,6 +141,16 @@
 
   \runtime 
   The set-up of the graph requires (m + 2n) edges where m are the edges of the original graph and n are the nodes of the original graph. The runtime of FordFulkerson is bound by $O((m+2n)n)$ , which is polynomial in m and n. \newline
+
+  \part{d}
+  \algo Given there are equal number n of actresses,$[A_i, A_2, \dots, A_n]$ and actors,$[B_1, B_2, \dots, B_n]$. From the given database who compose a bipartite graph of the pairing of the actresses and actors, where an edge from $A_i$ to $B_j$ indicates that actress $A_i$ has appeared in a movie with actor $B_j$. We define two additional nodes source,s, and the sink,t, such that there is an edge from source to each actress of weight 1 and there is an edge from each actor to the sink of weight 1. The edges between the actresses and actors are also 1. With this setup, if we run ford-fulkerson  and get a maximum flow equal to n, that means we have received a perfect matching because, each edge terminating to the sink, contributes 1 unit of flow which further means that each actor $B_j$ received 1 unit of flow from exactly one $A_i$. Under these scenario, we see that each actress has a 1 unit contribution to exactly one actor, and since the actor flows exactly one unit, it must have received from exactly one actress. Thus there is a perfect matching. If Bob has this perfect matching solution, then for every actress Alice names uniquely, say $A_i$, Bob will have an unique answer,$B_j$, and ultimately after n trials, since Alice cannot repeat names, she will exhaust the list of the actresses and fail to produce a new actress.Hence \textbf {there exists a wining strategy for Bob}. (Proved)\newline
+ \begin{figure}[H]
+   \centering
+  \includegraphics[width=14cm, height=12cm]{Prob3d}
+  \caption{Actors and Actresses}
+  \end{figure}
+
+  \part{d.bonus}
    
  \end{document}
 
