@@ -150,7 +150,9 @@
   \caption{Actors and Actresses}
   \end{figure}
 
-  \part{d.bonus}
+  \part{d.bonus} If there does not exists a perfect matching, then the max flow is less than n, that means, not all actors could be paired with an actress edge of flow 1. This leads to the fact, that there is atleast one actress, $A_i$, whose flow could not be transferred to one of the actors. This can happen in two cases, either the actors she was paired with had edges already saturated, which means there exists atleast another actor who doesn't have any pairing or she doesn't have a pair. In the first case, suppose $A_{i}$ had paired with some $B_j$'s, who had other pairs with $A_k$'s and the flow happended from these other $A_k$'s to the $B_j$'s leaving $A_i$ out. Then, if Alice names these $A_k$'s first, Bob will be able to answer with the corresponding $B_j$'s, and then she can put up $A_i$, whose pairings have already been exhausted by Bob. So Bob looses and Alice gets a wining strategy. The other case is the $A_i$ doesn't have a pairing, in which case Alice starts with $A_i$ and Bob looses in the first round itself. \newline
+
+  \question{4}{Unexpected Reductions to Flow/Matchings \dots}
    
  \end{document}
 
